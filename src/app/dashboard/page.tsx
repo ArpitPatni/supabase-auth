@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
+import ThemeToggle from '../../components/ThemeToggle'
 
 interface Profile {
   id: string
@@ -54,8 +55,8 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
-        <div className="text-lg">Loading...</div>
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="text-lg text-gray-900 dark:text-white">Loading...</div>
       </div>
     )
   }
@@ -63,35 +64,42 @@ export default function Dashboard() {
   if (!user || !profile) return null
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="mx-auto max-w-4xl">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <button
-            onClick={handleSignOut}
-            className="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-500"
-          >
-            Sign Out
-          </button>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+          <div className="flex items-center space-x-4">
+            <ThemeToggle />
+            <button
+              onClick={handleSignOut}
+              className="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-500"
+            >
+              Sign Out
+            </button>
+          </div>
         </div>
-        
-        <div className="mt-8 space-y-6">
-          <div className="rounded-lg bg-white p-6 shadow">
-            <h2 className="text-xl font-semibold text-gray-900">Profile Details</h2>
-            <div className="mt-4 space-y-4">
-              <div>
-                <label className="text-sm font-medium text-gray-500">Email</label>
-                <p className="mt-1 text-gray-900">{profile.email}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-500">User ID</label>
-                <p className="mt-1 text-gray-900">{profile.id}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-500">Account Created</label>
-                <p className="mt-1 text-gray-900">
-                  {new Date(profile.created_at).toLocaleDateString()}
-                </p>
+
+        <div className="mt-8">
+          <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800">
+            <div className="px-4 py-5 sm:p-6">
+              <h3 className="text-lg font-medium leading-6 text-gray-900 dark:text-white">
+                Profile Information
+              </h3>
+              <div className="mt-5 space-y-6">
+                <div>
+                  <label className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    Email
+                  </label>
+                  <p className="mt-1 text-sm text-gray-900 dark:text-white">{profile?.email}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    Account Created
+                  </label>
+                  <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                    {profile?.created_at && new Date(profile.created_at).toLocaleDateString()}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
